@@ -1,7 +1,10 @@
 const tipForm = document.getElementById('tip-form');
 const tipsContainer = document.getElementById('tip-container');
 const fbBtn = document.getElementById('feedback-btn');
+// const deleteButton = document.getElementById('deleteBtn')
+// const tips = require('../../routes/tips')
 
+// redirect to feedback
 fbBtn.addEventListener('click', (e) => {
   e.preventDefault();
   window.location.href = '/feedback';
@@ -24,6 +27,37 @@ const createCard = (tip) => {
   );
   cardHeaderEl.innerHTML = `${tip.username} </br>`;
 
+  // Create card delete button
+  const cardDeleteButton = document.createElement('button');
+  cardDeleteButton.classList.add(
+    'delete-button');
+  cardDeleteButton.setAttribute(
+    'type', 'sumbit',
+    'id', 'deleteBtn');
+  cardDeleteButton.innerHTML = 'Delete Note';
+  cardDeleteButton.addEventListener('click', event => {
+    event.stopPropagation();
+    console.log(event.target)
+    const buttonId = event.target.getAttribute('key');
+    const parentNoteId = event.target.parentElement.getAttribute('key');
+    console.log(parentNoteId)
+    console.log(buttonId)
+    fetch(`/api/tips/${buttonId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type' : 'application/json',
+      }
+    })
+    .then(() => {
+      const card = document.querySelector('[key="'+parentNoteId+'"]')
+    function removeCard() {card.remove()};
+    removeCard();
+    console.log(card + "HTML deleted");
+    })
+
+  });
+  cardDeleteButton.setAttribute('key', tip.tip_id)
+
   // Create card body
   const cardBodyEl = document.createElement('div');
   cardBodyEl.classList.add('card-body', 'bg-light', 'p-2');
@@ -32,11 +66,11 @@ const createCard = (tip) => {
   // Append the header and body to the card element
   cardEl.appendChild(cardHeaderEl);
   cardEl.appendChild(cardBodyEl);
+  cardEl.appendChild(cardDeleteButton)
 
   // Append the card element to the tips container in the DOM
   tipsContainer.appendChild(cardEl);
 };
-
 // Get a list of existing tips from the server
 const getTips = () =>
   fetch('/api/tips', {
@@ -71,6 +105,7 @@ const postTip = (tip) =>
     });
 
 // When the page loads, get all the tips
+
 getTips().then((data) => data.forEach((tip) => createCard(tip)));
 
 // Function to validate the tips that were submitted
@@ -165,3 +200,28 @@ const handleFormSubmit = (e) => {
 
 // Listen for when the form is submitted
 tipForm.addEventListener('submit', handleFormSubmit);
+
+document.body.addEventListener( 'submit', function ( event ) {
+  window.location.reload(true);
+  if( event.target.id == 'deleteBtn' ) {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log(event.target)
+    const buttonId = event.target.getAttribute('key');
+    const parentNoteId = event.target.parentElement.getAttribute('key');
+    console.log(parentNoteId)
+    console.log(buttonId)
+    fetch(`/api/tips/${buttonId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type' : 'application/json',
+      }
+    })
+    .then(() => {
+      const card = document.querySelector('[key="'+parentNoteId+'"]')
+    function removeCard() {card.remove()};
+    removeCard();
+    console.log(card + "HTML deleted");
+    })
+  };
+} );
