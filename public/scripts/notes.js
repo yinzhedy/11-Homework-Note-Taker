@@ -10,6 +10,57 @@ fbBtn.addEventListener('click', (e) => {
   window.location.href = '/feedback';
 });
 
+
+function handleNoteEdit(target) {
+  console.log('Form edit invoked');
+  console.log(target)
+  const buttonId = target.getAttribute('key')
+  const textArea = document.getElementById('noteText');
+  const titleArea = document.getElementById('notetitle');
+  const addButton = document.getElementById('addBtn');
+  const noteForm = document.getElementById('note-form');
+  const submitEditButton = document.getElementById('submitEditBtn');
+
+
+  function replaceformTextWithCardToBeEdited() {
+  const closestNoteText = document.querySelector('[key="'+buttonId+'body"]').firstChild.innerHTML;
+  const closestNoteTitle = document.querySelector('[key="'+buttonId+'title"]').firstChild.wholeText;
+  textArea.value = closestNoteText;
+  titleArea.value = closestNoteTitle;}
+  
+  function replaceAddButtonWithSubmitButton() {
+    console.log(noteForm)
+    console.log(submitEditButton)
+    addButton.style.display = "none";
+    submitEditButton.style.display = "block";
+  }
+
+  function handleEditNoteReplaceInDatabase() {
+    fetch(`/api/notes/${buttonId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type' : 'application/json',
+      }
+    })
+    .then(() => {
+      addButton.style.display('block');
+      submitEditButton.style.display('none');
+    })
+  
+  }
+
+  replaceformTextWithCardToBeEdited();
+  replaceAddButtonWithSubmitButton();
+  handleEditNoteReplaceInDatabase();
+  
+  submitEditButton.addEventListener('submit', event => {
+    event.stopPropagation();
+    event.preventDefault();
+    console.log(submit-event-triggered)
+  })
+  
+};
+
 const createCard = (note) => {
   // Create card
   const cardEl = document.createElement('div');
@@ -25,6 +76,7 @@ const createCard = (note) => {
     'p-2',
     'm-0'
   );
+  cardHeaderEl.setAttribute('key', note.note_id+'title')
   cardHeaderEl.innerHTML = `${note.title} </br>`;
 
   // Create card delete button
@@ -32,7 +84,7 @@ const createCard = (note) => {
   cardDeleteButton.classList.add(
     'delete-button');
   cardDeleteButton.setAttribute(
-    'type', 'sumbit',
+    'type', 'submit',
     'id', 'deleteBtn');
   cardDeleteButton.innerHTML = 'Delete Note';
   cardDeleteButton.addEventListener('click', event => {
@@ -58,15 +110,32 @@ const createCard = (note) => {
   });
   cardDeleteButton.setAttribute('key', note.note_id)
 
+  // Create edit button
+  const editNoteButton = document.createElement('button');
+  editNoteButton.classList.add(
+    'edit-button');
+  editNoteButton.setAttribute(
+    'type', 'submit',
+    'id', 'editBtn');
+  editNoteButton.innerHTML = 'Edit Note';
+  editNoteButton.setAttribute('key', note.note_id)
+  editNoteButton.addEventListener('click', event => {
+    event.preventDefault();
+    event.stopPropagation();
+    handleNoteEdit(event.target);
+  })
+
   // Create card body
   const cardBodyEl = document.createElement('div');
   cardBodyEl.classList.add('card-body', 'bg-light', 'p-2');
+  cardBodyEl.setAttribute('key', note.note_id+'body')
   cardBodyEl.innerHTML = `<p>${note.note}</p> <a> Created on: ${note.date}</a> <a> at ${note.time}</a>`;
 
   // Append the header and body to the card element
   cardEl.appendChild(cardHeaderEl);
   cardEl.appendChild(cardBodyEl);
-  cardEl.appendChild(cardDeleteButton)
+  cardEl.appendChild(cardDeleteButton);
+  cardEl.appendChild(editNoteButton);
 
   // Append the card element to the notes container in the DOM
   notesContainer.appendChild(cardEl);
