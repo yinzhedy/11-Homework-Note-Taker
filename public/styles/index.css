@@ -1706,3 +1706,12 @@ label form [type='radio'] {
     align-content: center;
   }
 }
+
+.new-note-column,
+.existing-note-column {
+  flex: 50%;
+}
+
+.row-note-columns-container {
+  display: flex;
+}

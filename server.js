@@ -15,11 +15,15 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/api', api);
 
-app.use(express.static('public'));6
+app.use(express.static('public'));
 
-// GET Route for homepage
+// GET Route for landing page
 app.get('/', (req, res) =>
-  res.sendFile(path.join(__dirname, '/public/index.html'))
+  res.sendFile(path.join(__dirname, '/public/landingpage.html')));
+
+//Get Route for notetaker page
+app.get('/index', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/pages/index.html'))
 );
 
 // GET Route for feedback page
