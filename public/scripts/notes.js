@@ -61,7 +61,7 @@ const createCard = (note) => {
   // Create card body
   const cardBodyEl = document.createElement('div');
   cardBodyEl.classList.add('card-body', 'bg-light', 'p-2');
-  cardBodyEl.innerHTML = `<p>${note.note}</p> <a> Created on: ${note.date}</a>`;
+  cardBodyEl.innerHTML = `<p>${note.note}</p> <a> Created on: ${note.date}</a> <a> at ${note.time}</a>`;
 
   // Append the header and body to the card element
   cardEl.appendChild(cardHeaderEl);

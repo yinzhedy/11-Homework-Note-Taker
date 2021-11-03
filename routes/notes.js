@@ -48,13 +48,15 @@ notes.post('/', (req, res) => {
 
   const { title, note } = req.body;
 
-  const creationDate = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
+  const creationDate = moment().format("dddd, MMMM Do YYYY");
+  const creationTime = moment().format("h:mm:ss a")
 
   if (req.body) {
     const newnote = {
       title,
       note,
       date: creationDate,
+      time: creationTime,
       note_id: uuidv4(),
     };
 
