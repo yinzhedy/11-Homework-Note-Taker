@@ -22,8 +22,8 @@ app.get('/', (req, res) =>
   res.sendFile(path.join(__dirname, '/public/landingpage.html')));
 
 //Get Route for notetaker page
-app.get('/index', (req, res) =>
-  res.sendFile(path.join(__dirname, '/public/pages/index.html'))
+app.get('/notes', (req, res) =>
+  res.sendFile(path.join(__dirname, '/public/pages/notes.html'))
 );
 
 // GET Route for feedback page

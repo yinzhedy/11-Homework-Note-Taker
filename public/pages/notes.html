@@ -3,7 +3,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>UI/UX Tips</title>
+    <title>NoteTaker</title>
     <link rel="stylesheet" href="./styles/index.css" />
   </head>
 
@@ -28,22 +28,22 @@
     </section>
     <div class="row-note-columns-container">
       <div class="existing-note-column">
-        <section class="tips" id="tip-container"></section>
+        <section class="notes" id="note-container"></section>
       </div>
       <div class="new-note-column">
-        <section class="tip-form">
+        <section class="note-form">
           <form
             class="
               flex-row
               justify-center justify-space-between-md
               align-center
             "
-            id="tip-form"
+            id="note-form"
           >
             <div class="col-12">
               <textarea
-                name="tipText"
-                id="tipText"
+                name="noteText"
+                id="noteText"
                 placeholder="Write your note here"
                 value=""
                 class="form-input w-100"
@@ -51,8 +51,8 @@
             </div>
             <div class="col-12 col-lg-9">
               <input
-                name="tipUsername"
-                id="tipUsername"
+                name="noteUsername"
+                id="noteUsername"
                 placeholder="Add a title for your note"
                 value=""
                 class="form-input w-100"
@@ -68,6 +68,6 @@
         >
       </div>
     </div>
-    <script src="../scripts/index.js"></script>
+    <script src="../scripts/notes.js"></script>
   </body>
 </html>

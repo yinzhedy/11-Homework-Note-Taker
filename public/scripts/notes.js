@@ -1,8 +1,8 @@
-const tipForm = document.getElementById('tip-form');
-const tipsContainer = document.getElementById('tip-container');
+const noteForm = document.getElementById('note-form');
+const notesContainer = document.getElementById('note-container');
 const fbBtn = document.getElementById('feedback-btn');
 // const deleteButton = document.getElementById('deleteBtn')
-// const tips = require('../../routes/tips')
+// const notes = require('../../routes/notes')
 
 // redirect to feedback
 fbBtn.addEventListener('click', (e) => {
@@ -10,11 +10,11 @@ fbBtn.addEventListener('click', (e) => {
   window.location.href = '/feedback';
 });
 
-const createCard = (tip) => {
+const createCard = (note) => {
   // Create card
   const cardEl = document.createElement('div');
   cardEl.classList.add('card', 'mb-3', 'm-3');
-  cardEl.setAttribute('key', tip.tip_id);
+  cardEl.setAttribute('key', note.note_id);
 
   // Create card header
   const cardHeaderEl = document.createElement('h4');
@@ -25,7 +25,7 @@ const createCard = (tip) => {
     'p-2',
     'm-0'
   );
-  cardHeaderEl.innerHTML = `${tip.username} </br>`;
+  cardHeaderEl.innerHTML = `${note.username} </br>`;
 
   // Create card delete button
   const cardDeleteButton = document.createElement('button');
@@ -42,7 +42,7 @@ const createCard = (tip) => {
     const parentNoteId = event.target.parentElement.getAttribute('key');
     console.log(parentNoteId)
     console.log(buttonId)
-    fetch(`/api/tips/${buttonId}`, {
+    fetch(`/api/notes/${buttonId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type' : 'application/json',
@@ -56,24 +56,24 @@ const createCard = (tip) => {
     })
 
   });
-  cardDeleteButton.setAttribute('key', tip.tip_id)
+  cardDeleteButton.setAttribute('key', note.note_id)
 
   // Create card body
   const cardBodyEl = document.createElement('div');
   cardBodyEl.classList.add('card-body', 'bg-light', 'p-2');
-  cardBodyEl.innerHTML = `<p>${tip.tip}</p>`;
+  cardBodyEl.innerHTML = `<p>${note.note}</p>`;
 
   // Append the header and body to the card element
   cardEl.appendChild(cardHeaderEl);
   cardEl.appendChild(cardBodyEl);
   cardEl.appendChild(cardDeleteButton)
 
-  // Append the card element to the tips container in the DOM
-  tipsContainer.appendChild(cardEl);
+  // Append the card element to the notes container in the DOM
+  notesContainer.appendChild(cardEl);
 };
-// Get a list of existing tips from the server
-const getTips = () =>
-  fetch('/api/tips', {
+// Get a list of existing notes from the server
+const getnotes = () =>
+  fetch('/api/notes', {
     method: 'GET', // or 'PUT'
     headers: {
       'Content-Type': 'application/json',
@@ -86,36 +86,36 @@ const getTips = () =>
       console.error('Error:', error);
     });
 
-// Post a new tip to the page
-const postTip = (tip) =>
-  fetch('/api/tips', {
+// Post a new note to the page
+const postnote = (note) =>
+  fetch('/api/notes', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(tip),
+    body: JSON.stringify(note),
   })
     .then((response) => response.json())
     .then((data) => {
       alert(data);
-      createCard(tip);
+      createCard(note);
     })
     .catch((error) => {
       console.error('Error:', error);
     });
 
-// When the page loads, get all the tips
+// When the page loads, get all the notes
 
-getTips().then((data) => data.forEach((tip) => createCard(tip)));
+getnotes().then((data) => data.forEach((note) => createCard(note)));
 
-// Function to validate the tips that were submitted
-const validateTip = (newTip) => {
-  const { username, topic, tip } = newTip;
+// Function to validate the notes that were submitted
+const validatenote = (newnote) => {
+  const { username, topic, note } = newnote;
 
   // Object to hold our error messages until we are ready to return
   const errorState = {
     username: '',
-    tip: '',
+    note: '',
     topic: '',
   };
 
@@ -125,10 +125,10 @@ const validateTip = (newTip) => {
     errorState.username = 'Invalid username!';
   }
 
-  // Bool value to see if the tip being added is at least 15 characters long
-  const tipContentCheck = tip.length > 15;
-  if (!tipContentCheck) {
-    errorState.tip = 'Tip must be at least 15 characters';
+  // Bool value to see if the note being added is at least 15 characters long
+  const noteContentCheck = note.length > 15;
+  if (!noteContentCheck) {
+    errorState.note = 'note must be at least 15 characters';
   }
 
   // Bool value to see if the topic is either UX or UI
@@ -138,7 +138,7 @@ const validateTip = (newTip) => {
   }
 
   const result = {
-    isValid: !!(utest && tipContentCheck && topicCheck),
+    isValid: !!(utest && noteContentCheck && topicCheck),
     errors: errorState,
   };
 
@@ -178,28 +178,28 @@ const handleFormSubmit = (e) => {
   e.preventDefault();
   console.log('Form submit invoked');
 
-  // Get the value of the tip and save it to a variable
-  const tipContent = document.getElementById('tipText').value;
+  // Get the value of the note and save it to a variable
+  const noteContent = document.getElementById('noteText').value;
 
   // get the value of the username and save it to a variable
-  const tipUsername = document.getElementById('tipUsername').value.trim();
+  const noteUsername = document.getElementById('noteUsername').value.trim();
 
-  // Create an object with the tip and username
-  const newTip = {
-    username: tipUsername,
+  // Create an object with the note and username
+  const newnote = {
+    username: noteUsername,
     topic: 'UX',
-    tip: tipContent,
+    note: noteContent,
   };
 
-  // Run the tip object through our validator function
-  const submission = validateTip(newTip);
+  // Run the note object through our validator function
+  const submission = validatenote(newnote);
 
-  // If the submission is valid, post the tip. Otherwise, handle the errors.
-  return submission.isValid ? postTip(newTip) : submitDiagnostics(submission);
+  // If the submission is valid, post the note. Otherwise, handle the errors.
+  return submission.isValid ? postnote(newnote) : submitDiagnostics(submission);
 };
 
 // Listen for when the form is submitted
-tipForm.addEventListener('submit', handleFormSubmit);
+noteForm.addEventListener('submit', handleFormSubmit);
 
 document.body.addEventListener( 'submit', function ( event ) {
   window.location.reload(true);
@@ -211,7 +211,7 @@ document.body.addEventListener( 'submit', function ( event ) {
     const parentNoteId = event.target.parentElement.getAttribute('key');
     console.log(parentNoteId)
     console.log(buttonId)
-    fetch(`/api/tips/${buttonId}`, {
+    fetch(`/api/notes/${buttonId}`, {
       method: 'DELETE',
       headers: {
         'Content-Type' : 'application/json',
