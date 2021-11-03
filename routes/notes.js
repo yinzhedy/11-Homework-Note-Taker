@@ -1,3 +1,4 @@
+const moment = require('moment');
 const notes = require('express').Router();
 const { v4: uuidv4 } = require('uuid');
 const {
@@ -45,13 +46,15 @@ notes.delete('/:note_id', (req, res) => {
 notes.post('/', (req, res) => {
   console.log(req.body);
 
-  const { username, topic, note } = req.body;
+  const { title, note } = req.body;
+
+  const creationDate = moment().format("dddd, MMMM Do YYYY, h:mm:ss a");
 
   if (req.body) {
     const newnote = {
-      username,
+      title,
       note,
-      topic,
+      date: creationDate,
       note_id: uuidv4(),
     };
 

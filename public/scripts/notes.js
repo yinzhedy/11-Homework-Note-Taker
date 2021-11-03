@@ -25,7 +25,7 @@ const createCard = (note) => {
     'p-2',
     'm-0'
   );
-  cardHeaderEl.innerHTML = `${note.username} </br>`;
+  cardHeaderEl.innerHTML = `${note.title} </br>`;
 
   // Create card delete button
   const cardDeleteButton = document.createElement('button');
@@ -61,7 +61,7 @@ const createCard = (note) => {
   // Create card body
   const cardBodyEl = document.createElement('div');
   cardBodyEl.classList.add('card-body', 'bg-light', 'p-2');
-  cardBodyEl.innerHTML = `<p>${note.note}</p>`;
+  cardBodyEl.innerHTML = `<p>${note.note}</p> <a> Created on: ${note.date}</a>`;
 
   // Append the header and body to the card element
   cardEl.appendChild(cardHeaderEl);
@@ -110,19 +110,19 @@ getnotes().then((data) => data.forEach((note) => createCard(note)));
 
 // Function to validate the notes that were submitted
 const validatenote = (newnote) => {
-  const { username, topic, note } = newnote;
+  const { title, topic, note } = newnote;
 
   // Object to hold our error messages until we are ready to return
   const errorState = {
-    username: '',
+    title: '',
     note: '',
     topic: '',
   };
 
-  // Bool value if the username is valid
-  const utest = username.length >= 4;
+  // Bool value if the title is valid
+  const utest = title.length >= 4;
   if (!utest) {
-    errorState.username = 'Invalid username!';
+    errorState.title = 'Invalid title!';
   }
 
   // Bool value to see if the note being added is at least 15 characters long
@@ -181,12 +181,12 @@ const handleFormSubmit = (e) => {
   // Get the value of the note and save it to a variable
   const noteContent = document.getElementById('noteText').value;
 
-  // get the value of the username and save it to a variable
-  const noteUsername = document.getElementById('noteUsername').value.trim();
+  // get the value of the title and save it to a variable
+  const notetitle = document.getElementById('notetitle').value.trim();
 
-  // Create an object with the note and username
+  // Create an object with the note and title
   const newnote = {
-    username: noteUsername,
+    title: notetitle,
     topic: 'UX',
     note: noteContent,
   };

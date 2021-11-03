@@ -1,1 +1,11 @@
-[]
+[
+    {
+        "time": 1635953109925,
+        "error_id": "8f002cc6-0dc2-42c3-9608-ac8e733e2658",
+        "errors": {
+            "title": "",
+            "note": "note must be at least 15 characters",
+            "topic": ""
+        }
+    }
+]
