@@ -1,6 +1,8 @@
 const noteForm = document.getElementById('note-form');
 const notesContainer = document.getElementById('note-container');
 const fbBtn = document.getElementById('feedback-btn');
+const addButton = document.getElementById('addBtn');
+const submitEditButton = document.getElementById('submitEditBtn');
 // const deleteButton = document.getElementById('deleteBtn')
 // const notes = require('../../routes/notes')
 
@@ -17,9 +19,8 @@ function handleNoteEdit(target) {
   const buttonId = target.getAttribute('key')
   const textArea = document.getElementById('noteText');
   const titleArea = document.getElementById('notetitle');
-  const addButton = document.getElementById('addBtn');
   const noteForm = document.getElementById('note-form');
-  const submitEditButton = document.getElementById('submitEditBtn');
+  submitEditButton.setAttribute('key', buttonId)
 
 
   function replaceformTextWithCardToBeEdited() {
@@ -35,29 +36,33 @@ function handleNoteEdit(target) {
     submitEditButton.style.display = "block";
   }
 
-  function handleEditNoteReplaceInDatabase() {
-    fetch(`/api/notes/${buttonId}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type' : 'application/json',
-      }
-    })
-    .then(() => {
-      addButton.style.display('block');
-      submitEditButton.style.display('none');
-    })
-  
-  }
+  // function replaceSubmitButtonWithAddButton() {
+  //     addButton.style.display('block');
+  //     submitEditButton.style.display('none');
+  // }
+
+  // function deleteFromDb(buttonId) {
+  // fetch(`/api/notes/${buttonId}`, {
+  //   method: 'DELETE',
+  //   headers: {
+  //     'Content-Type' : 'application/json',
+  //   }
+  // })
+  // .then(() => {
+  //   console.log('deleted' + buttonId + 'from DB')
+  // })
+// }
 
   replaceformTextWithCardToBeEdited();
   replaceAddButtonWithSubmitButton();
-  handleEditNoteReplaceInDatabase();
   
-  submitEditButton.addEventListener('submit', event => {
-    event.stopPropagation();
-    event.preventDefault();
-    console.log(submit-event-triggered)
-  })
+  // submitEditButton.addEventListener('submit', event => {
+  //   event.stopPropagation();
+  //   event.preventDefault();
+  //   replaceSubmitButtonWithAddButton();
+  //   // deleteFromDb(buttonId);
+  //   console.log(submit-event-triggered)
+  // })
   
 };
 
@@ -115,7 +120,7 @@ const createCard = (note) => {
   editNoteButton.classList.add(
     'edit-button');
   editNoteButton.setAttribute(
-    'type', 'submit',
+    'type', 'button',
     'id', 'editBtn');
   editNoteButton.innerHTML = 'Edit Note';
   editNoteButton.setAttribute('key', note.note_id)
@@ -243,8 +248,9 @@ const submitDiagnostics = (submissionObj) => {
 };
 
 // Function to handle when a user submits the feedback form
-const handleFormSubmit = (e) => {
+function handleFormSubmit(e) {
   e.preventDefault();
+
   console.log('Form submit invoked');
 
   // Get the value of the note and save it to a variable
@@ -268,11 +274,12 @@ const handleFormSubmit = (e) => {
 };
 
 // Listen for when the form is submitted
-noteForm.addEventListener('submit', handleFormSubmit);
+// noteForm.addEventListener('submit', handleFormSubmit);
 
 document.body.addEventListener( 'submit', function ( event ) {
   window.location.reload(true);
-  if( event.target.id == 'deleteBtn' ) {
+  console.log(event.target.id)
+  if( event.target.id === 'deleteBtn' ) {
     event.stopPropagation();
     event.preventDefault();
     console.log(event.target)
@@ -291,6 +298,43 @@ document.body.addEventListener( 'submit', function ( event ) {
     function removeCard() {card.remove()};
     removeCard();
     console.log(card + "HTML deleted");
+    })
+  }
+  else if (event.target.id = 'addBtn') {
+    console.log('add button clicked')
+    event.preventDefault();
+    event.stopPropagation();
+    handleFormSubmit(event);
+  }
+} );
+
+
+document.body.addEventListener( 'click', function ( event ) {
+  console.log(event.target.id)
+if (event.target.id != 'submitEditBtn') {
+  console.log('no button clicked');
+  return;
+}
+if(event.target.id === 'submitEditBtn') {
+  //   window.location.reload(true);
+    console.log('submit edit button clicked')
+    event.stopPropagation();
+    event.preventDefault();
+    const buttonId = event.target.getAttribute('key')
+    console.log(buttonId)
+    fetch(`/api/notes/${buttonId}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type' : 'application/json',
+      }
+    })
+    .then(() => {
+      addButton.click();
+    })
+    .then(() => {
+      addButton.style.display ='block';
+      submitEditButton.style.display ='none';
+      window.location.reload(true);
     })
   };
 } );
