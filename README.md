@@ -20,7 +20,10 @@
 
 ## Usage
     Video displaying function of the application:
-    - https://watch.screencastify.com/v/fveXKUMyMQ1piVDkeM3G
+    - https://youtu.be/q6h4cIvceeY
+
+    Link to Github repo:
+    https://github.com/yinzhedy/11-Homework-Note-Taker
 
 ## Instructions
 
