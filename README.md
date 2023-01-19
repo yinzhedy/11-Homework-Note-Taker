@@ -25,6 +25,9 @@
     Link to Github repo:
     https://github.com/yinzhedy/11-Homework-Note-Taker
 
+    due to heroku service changes please refer to the render deployment:
+    https://upenn-assignment-11-note-taker.onrender.com/
+
 ## Instructions
 
   Upon entering the site, click 'Get Started' button to enter the note taker application. On the left hand side you will see previously saved notes, with the option to edit or delete notes. Notes are presented with a 'Created on:' date label located at the bottom of the note and above the delete and edit buttons. On the right hand side there are input fields for the content and title of a new note to be added, click the add note button to add your new note to the list of saved notes on the left hand side. Click the 'submit feedback to the developer' button on the top left area of the page, under the ' My Note Taker Application' title, in order to input and send feedback to the developer (me.) You can then click the 'Homepage' button on the top right of the page to return to the note taker application.
